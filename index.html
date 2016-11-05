@@ -1,1 +1,64 @@
-Hello word!
+<html>
+<head>
+<title></title>
+<script type="text/javascript">
+
+var ballSize = 100;
+var tailSize = 15;
+var myWidth = 0, myHeight = 0;
+
+    if( typeof( window.innerWidth ) == 'number' ) {
+        //Non-IE
+        myWidth = window.innerWidth;
+        myHeight = window.innerHeight;
+    } else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+        //IE 6+ in 'standards compliant mode'
+        myWidth = document.documentElement.clientWidth;
+        myHeight = document.documentElement.clientHeight;
+    } else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+        //IE 4 compatible
+        myWidth = document.body.clientWidth;
+        myHeight = document.body.clientHeight;
+    }
+
+myWidth -= ballSize;
+myHeight -= ballSize;
+
+
+function fly() {
+	if (x+dx < 0 || x+dx > myWidth) dx *= -1;
+	if (y+dy < 0 || y+dy > myHeight) dy *= -1;
+	x += dx;
+	y += dy;
+	for (var i = tailSize-1; i>0 ;--i) {
+		balls[i].style.top = balls[i-1].style.top;
+		balls[i].style.left = balls[i-1].style.left;
+	}
+	var ball = balls[0];
+	ball.style.top = Math.floor(y)+"px";
+	ball.style.left = Math.floor(x)+"px";
+}
+
+</script>
+</head>
+<body style="background-color:black">
+<script type="text/javascript">
+var x = myWidth*Math.random();
+var y = myHeight*Math.random();
+var dx = ballSize/8+Math.random()*ballSize/8;
+var dy = ballSize/8+Math.random()*ballSize/8;
+var balls = [];
+
+for (var i=tailSize-1;i>=0;--i) {
+	var ball = document.createElement('div');
+	ball.style.cssText = "position:absolute;width:"+ballSize+"px;height:"+ballSize+"px;top:"+Math.floor(y)+"px;left:"+Math.floor(x)+"px";
+	var c = 255-Math.floor(250*(i/tailSize));
+	ball.style.backgroundColor = "rgb("+c+","+c+","+c+")";
+	document.getElementsByTagName('body')[0].appendChild(ball);
+	balls[i] = ball;
+}
+
+setInterval(fly, 10);
+</script>
+</body>
+</html>
